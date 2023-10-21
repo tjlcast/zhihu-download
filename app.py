@@ -1,13 +1,19 @@
 import io
-import os
 import shutil
 import zipfile
+
+from flask import Flask, send_file, render_template, config
+
 from main import *
 
 app = Flask(__name__)
+app.config.from_object("config.DeployConfig")
+PORT = app.config['PORT']
+
 
 @app.route("/", methods=["GET", "POST"])
 def index():
+    from flask import request
     if request.method == "POST":
         url = request.form["url"]
         tmpdir = "zhihu"
@@ -42,9 +48,12 @@ def index():
             shutil.rmtree(tmpdir)
 
         # 使用 send_file 发送内存中的 ZIP 文件
-        return send_file(zip_data, attachment_filename = f"{markdown_title}.zip", as_attachment=True)
+        print(f"123: {markdown_title}.zip")
+
+        return send_file(zip_data, download_name=f"{markdown_title}.zip", as_attachment=True)
 
     return render_template("index.html")
 
+
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(port=PORT)

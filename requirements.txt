@@ -1,0 +1,4 @@
+requests
+markdownify
+bs4
+flask
