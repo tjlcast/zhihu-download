@@ -1,6 +1,9 @@
 FROM python:3.8
 
-COPY . /app
+WORKDIR /app
+
+COPY *.py /app
+COPY *.txt /app
 
 RUN pip install -r requirements.txt
 EXPOSE 5000
