@@ -4,9 +4,9 @@ WORKDIR /app
 
 COPY *.py /app
 COPY *.txt /app
+COPY templates /app/templates
 
 RUN pip install -r requirements.txt
-EXPOSE 5000
 
 
 CMD ["python", "app.py"]
