@@ -9,6 +9,7 @@ Copyright (c) 2023 by Kust-BME, All Rights Reserved.
 '''
 import os
 import re
+import sys
 import urllib.parse
 
 import requests
@@ -112,15 +113,15 @@ def save_and_transform(title_element, content_element, author, url, hexo_uploade
         for card_link in content_element.find_all("a", class_="LinkCard"):
             article_url = card_link['href']
             article_title = card_link['data-text']
-            
+
             # 如果没有标题，则使用span代替
             if not article_title:
                 article_title_span = card_link.select_one(".LinkCard-title")
                 if article_title_span:
                     article_title = article_title_span.text.strip()
                 else:
-                    article_title = article_url # 如果没有span，则使用链接代替
-            
+                    article_title = article_url  # 如果没有span，则使用链接代替
+
             markdown_link = f"[{article_title}]({article_url})"
             card_link.insert_after('\n\n')
             card_link.replace_with(markdown_link)
@@ -246,7 +247,6 @@ def parse_zhihu_column(url, hexo_uploader):
 
 
 if __name__ == "__main__":
-
     # 回答
     # url = "https://www.zhihu.com/question/35931336/answer/2996939350"
 
@@ -257,4 +257,6 @@ if __name__ == "__main__":
     # url = "https://www.zhihu.com/column/c_1649842617335672832"
 
     # hexo_uploader=True 表示在公式前后加上 {% raw %} {% endraw %}，以便 hexo 正确解析
+    url = sys.argv[1]
+    print(f"Download:::{url}")
     judge_zhihu_type(url, hexo_uploader=False)
